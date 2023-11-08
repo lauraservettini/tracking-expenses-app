@@ -1,5 +1,8 @@
 # ignora la cartella vendor
-/vendor
+/vendor/
 
 # file *.log
 *.log
+
+#composer.phar
+composer.phar
