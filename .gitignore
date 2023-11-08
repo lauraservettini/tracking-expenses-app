@@ -1,0 +1,5 @@
+# ignora la cartella vendor
+/vendor
+
+# file *.log
+*.log
