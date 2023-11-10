@@ -12,14 +12,16 @@ class HomeController
     public function __construct(
         private TemplateEngine $view
     ) {
-        // $this->view = new TemplateEngine(Paths::VIEW);
     }
 
     public function home()
     {
-        echo $this->view->render("/index.php", [
-            "title" => "Home page",
+        echo $this->view->render(
+            "/index.php",
+            // [
+            // "title" => "Home page",
 
-        ]);
+            // ]
+        );
     }
 }

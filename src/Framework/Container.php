@@ -10,6 +10,7 @@ use Framework\Exceptions\ContainerException;
 class Container
 {
     private array $definitions = [];
+    private array $resolved = [];
 
     public function addDefinitions(array $newdefinitions)
     {
@@ -63,15 +64,23 @@ class Container
         return $reflectionClass->newInstanceArgs($dependencies);
     }
 
-    public function get(string $id)
+    public function get(string $className)
     {
-        if (!array_key_exists($id, $this->definitions)) {
-            throw new ContainerException("Class {$id} does not exist in container.");
+        if (!array_key_exists($className, $this->definitions)) {
+            throw new ContainerException("Class {$className} does not exist in container.");
         }
 
-        $factory = $this->definitions[$id];
+        // verifica se il valore esiste e ritorna il valore che contiene le dependency per instanziare la classe
+        // Applica alla classe Container il Singleton Pattern evitando la duplicazione dell'instanza TemplateEngine(con variabili globali del template)
+        if (array_key_exists($className, $this->resolved)) {
+            return $this->resolved[$className];
+        }
+
+        $factory = $this->definitions[$className];
 
         $dependency = $factory();
+
+        $this->resolved[$className] = $dependency;
 
         return $dependency;
     }
