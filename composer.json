@@ -8,7 +8,9 @@
       "email": "lauraservettini87@gmail.com"
     }
   ],
-  "require": {},
+  "require": {
+    "vlucas/phpdotenv": "^5.5"
+  },
   "autoload": {
     "psr-4": {
       "Framework\\": "src/Framework",
@@ -20,6 +22,6 @@
     ]
   },
   "scripts": {
-    "etapp": "php database-cli.php"
+    "etapp": "php cli.php"
   }
 }

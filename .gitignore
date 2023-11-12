@@ -6,3 +6,6 @@
 
 #composer.phar
 composer.phar
+
+# ignora .env file
+.env
