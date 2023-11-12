@@ -23,13 +23,21 @@ class Validator
 
         foreach ($fields as $fieldName => $rules) {
             foreach ($rules as $rule) {
+                $ruleParams = [];
+
+                // verifica se ci sono parametri nella rule
+                if (str_contains($rule, ":")) {
+                    [$rule, $ruleParams] = explode(":", $rule);
+                    $ruleParams = explode(",", $ruleParams);
+                }
+
                 $ruleValidator = $this->rules[$rule];
 
                 // se la validazione ha successo va avanti con continue
-                if ($ruleValidator->validate($formData, $fieldName, [])) {
+                if ($ruleValidator->validate($formData, $fieldName, $ruleParams)) {
                     continue;
                 } else {
-                    $errors[$fieldName][] = $ruleValidator->getMessage($formData, $fieldName, []);
+                    $errors[$fieldName][] = $ruleValidator->getMessage($formData, $fieldName, $ruleParams);
                 }
             }
         }

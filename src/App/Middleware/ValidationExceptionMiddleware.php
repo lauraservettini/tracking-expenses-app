@@ -15,8 +15,19 @@ class ValidationExceptionMiddleware implements MiddlewareInterface
         try {
             $next();
         } catch (ValidationException $e) {
+            $oldFormData = $_POST;
+
+            // chiavi da escludere per la visualizzazione nel browser
+            $excludedFields = ['password', "confirmPassword"];
+
+            // toglie le $escludedFields dall'array ritornato da $_POST
+            $formattedFormData = array_diff_key(
+                $oldFormData,
+                array_flip($excludedFields)
+            );
             // salva i dati dell'array relativi ai campi dei form già inseriti nella sessione
             $_SESSION['errors'] = $e->errors;
+            $_SESSION['oldFormData'] = $formattedFormData;
 
             // fa il redirect allo stesso indirizzo da cui è stato inviato il form
             $referer = $_SERVER['HTTP_REFERER'];

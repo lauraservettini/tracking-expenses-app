@@ -23,6 +23,12 @@ class FlashMiddleware implements MiddlewareInterface
         // distrugge i messaggi di errore una volta passati
         unset($_SESSION["errors"]);
 
+        // aggiunge i dati immessi nel form se compilato
+        $this->view->addGlobal("oldFormData", $_SESSION["oldFormData"] ?? []);
+
+        // distrugge i messaggi di errore una volta passati
+        unset($_SESSION["oldFormData"]);
+
         $next();
     }
 }
