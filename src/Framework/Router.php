@@ -15,7 +15,8 @@ class Router
         $this->routes[] = [
             "path" => $path,
             "method" => strtoupper($method),
-            "controller" => $controller
+            "controller" => $controller,
+            "middlewares" => []
         ];
     }
 
@@ -34,6 +35,7 @@ class Router
         $method = strtoupper($method);
 
         foreach ($this->routes as $route) {
+            // verifica se il path inserito è diverso dalla route e dal metodo esistenti
             if (
                 !preg_match("#^{$route['path']}$#", $path) ||
                 $route["method"] !== $method
@@ -51,7 +53,10 @@ class Router
 
             $action = fn () => $controllerInstance->{$function}();
 
-            foreach ($this->middlewares as $middleware) {
+            // crea un array con le middleware globali e le middleware associate alla route
+            // esegue prima le middleware globali e poi le route middleware
+            $allMiddlewares = [...$route['middlewares'], ...$this->middlewares];
+            foreach ($allMiddlewares as $middleware) {
                 // prima di utilizzarla si instanzia la  per poter utilizzare i metodi relativi
                 $middlewareInstance = $container ? $container->resolve($middleware) : new $middleware;
 
@@ -71,5 +76,11 @@ class Router
     public function addMiddleware(string $middleware)
     {
         $this->middlewares[] = $middleware;
+    }
+
+    public function addRouteMiddleware(string $middleware)
+    {
+        $lastRouteKey = array_key_last($this->routes);
+        $this->routes[$lastRouteKey]['middlewares'][] = $middleware;
     }
 }

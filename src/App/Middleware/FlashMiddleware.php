@@ -20,6 +20,7 @@ class FlashMiddleware implements MiddlewareInterface
         // riporta il valore di $globalTemplateData["errors"] a [] se non ci sono errori, anche nel caso in cui erano stati salvati precedentemente
         $this->view->addGlobal("errors", $_SESSION["errors"] ?? []);
 
+
         // distrugge i messaggi di errore una volta passati
         unset($_SESSION["errors"]);
 
@@ -28,6 +29,13 @@ class FlashMiddleware implements MiddlewareInterface
 
         // distrugge i messaggi di errore una volta passati
         unset($_SESSION["oldFormData"]);
+
+        // crea la variabile globale isAuth
+        if (empty($_SESSION['user'])) {
+            $this->view->addGlobal("auth", ["isAuth" => (bool) false]);
+        } else {
+            $this->view->addGlobal("auth", ["isAuth" => (bool) true]);
+        }
 
         $next();
     }

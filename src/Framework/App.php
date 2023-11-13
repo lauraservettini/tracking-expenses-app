@@ -31,16 +31,25 @@ class App
     public function get(string $path, array $controller)
     {
         $this->router->add("GET", $path, $controller);
+
+        return $this;
     }
 
     public function post(string $path, array $controller)
     {
         $this->router->add("POST", $path, $controller);
+
+        return $this;
     }
 
     // richiama la funzione che aggiunge la middleware alla lista (array) su Router.php
     public function addMiddleware(string $middleware)
     {
         $this->router->addMiddleware($middleware);
+    }
+
+    public function addRouteMiddleware(string $middleware)
+    {
+        $this->router->addRouteMiddleware(($middleware));
     }
 }
