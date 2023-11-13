@@ -50,4 +50,12 @@ class AuthController
         //dopo la registrazione redirect alla home page
         redirectTo('/');
     }
+
+    public function getLogout()
+    {
+
+        $this->userService->logout();
+
+        redirectTo("/login");
+    }
 }

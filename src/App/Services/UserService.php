@@ -73,4 +73,13 @@ class UserService
             }
         }
     }
+
+    public function logout()
+    {
+        // cancella la variabile user dalla sessione
+        unset($_SESSION['user']);
+
+        // rigenera il SESSION ID
+        session_regenerate_id();
+    }
 }
