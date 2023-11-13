@@ -16,7 +16,7 @@ class AuthController
     ) {
     }
 
-    public function register()
+    public function getRegister()
     {
         echo $this->view->render("/auth/register.php", [
             "title" => "Register page",
@@ -30,6 +30,23 @@ class AuthController
         $this->userService->isEmailTaken($_POST['email']);
 
         $this->userService->create($_POST);
+        //dopo la registrazione redirect alla home page
+        redirectTo('/');
+    }
+
+    public function getLogin()
+    {
+        echo $this->view->render("/auth/login.php", [
+            "title" => "Login page",
+
+        ]);
+    }
+
+    public function login()
+    {
+        $this->validatorService->validateLogin($_POST);
+        $this->userService->login($_POST);
+
         //dopo la registrazione redirect alla home page
         redirectTo('/');
     }

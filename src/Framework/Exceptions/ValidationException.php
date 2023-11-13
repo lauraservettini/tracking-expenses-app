@@ -9,8 +9,10 @@ use RuntimeException;
 // crea una classe per validare i campi del form
 class ValidationException extends RuntimeException
 {
-    public function __construct(public array $errors, int $code = 422)
+    public array $errors;
+    public function __construct(array $errors, int $code = 422)
     {
+        $this->errors = $errors;
         parent::__construct(code: $code);
     }
 }

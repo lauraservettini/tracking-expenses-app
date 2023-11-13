@@ -37,4 +37,13 @@ class ValidatorService
             "tos" => ["required"],
         ]);
     }
+
+    public function validateLogin(array $formData)
+    {
+        // controlla se tutti i campi rispettano le "rules" date
+        $this->validator->validate($formData, [
+            "email" => ["required", "email"],
+            "password" => ["required", "password"]
+        ]);
+    }
 }

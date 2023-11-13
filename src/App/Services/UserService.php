@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Services;
 
 use Framework\Database;
-use Dotenv\Exception\ValidationException;
+use Framework\Exceptions\ValidationException;
 
 class UserService
 {
@@ -17,7 +17,7 @@ class UserService
     {
         //verifica se la password già esiste
         $emailCount = $this->db->query(
-            "SELECT COUNT(*) FROM users WHERE email = :email",
+            "SELECT COUNT(*) FROM users WHERE email = :email ;",
             ['email' => $email]
         )->count();
 
@@ -42,5 +42,32 @@ class UserService
                 'url' => $formData['socialMediaURL'],
             ]
         );
+    }
+
+
+
+
+    public function login(array $formData)
+    {
+        // legge e salva in un array associativo i dati dell'user dal database, se l'user non esiste ritorna NULL
+        $user = $this->db->query(
+            "SELECT * FROM users WHERE email = :email ;",
+            ['email' => $formData['email']]
+        )->find();
+
+        if (!$user) {
+            throw new ValidationException(["email" => ["The user doesn't already exist!"]]);
+        } else {
+            // compara le password, se $user['password'] è nulla associa il valore ""
+            $passwordMatch = password_verify($formData['password'], $user['password'] ?? "");
+
+
+            if (!$passwordMatch) {
+                throw new ValidationException(["password" => ["Invalid password for the user."]]);
+            } else {
+                // salva nella sessione solo l'id che identifica in modo univoco l'user
+                $_SESSION['user'] = $user['id'];
+            }
+        }
     }
 }
