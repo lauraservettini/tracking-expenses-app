@@ -42,6 +42,12 @@ class UserService
                 'url' => $formData['socialMediaURL'],
             ]
         );
+
+        // rigerenera il SESSION ID al signup
+        session_regenerate_id();
+
+        // salva nella sessione solo l'id che identifica in modo univoco l'user
+        $_SESSION['user'] = $this->db->id();
     }
 
 

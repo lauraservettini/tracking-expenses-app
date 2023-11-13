@@ -48,4 +48,10 @@ class Database
     {
         return $this->stmt->fetch();
     }
+
+    public function id()
+    {
+        // ritorna l'id dell'ultimo record inserito nel database
+        return $this->connection->lastInsertId();
+    }
 }
