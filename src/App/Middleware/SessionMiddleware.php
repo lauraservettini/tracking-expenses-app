@@ -27,8 +27,7 @@ class SessionMiddleware implements MiddlewareInterface
                 'secure' => $_ENV['APP_ENV'] === "production",
                 'httponly' => true,
                 'samesite' => "lax",
-                'lifetime' => 300,
-
+                'lifetime' => 300
             ]
         );
 

@@ -65,6 +65,9 @@ class UserService
             if (!$passwordMatch) {
                 throw new ValidationException(["password" => ["Invalid password for the user."]]);
             } else {
+                // rigerenera il SESSION ID ad ogni login
+                session_regenerate_id();
+
                 // salva nella sessione solo l'id che identifica in modo univoco l'user
                 $_SESSION['user'] = $user['id'];
             }
