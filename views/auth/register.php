@@ -18,7 +18,7 @@
                 <?php if (array_key_exists("email", $errors)) : ?>
                     <div class="bg-gra-100 mt-2 p-2 text-red-500">
                         <?php foreach ($errors['email'] as $error) {
-                            echo escape($error . "<br>");
+                            echo escape($error) . "<br>";
                         } ?>
                     </div>
                 <?php endif; ?>
@@ -30,7 +30,7 @@
                 <?php if (array_key_exists("age", $errors)) : ?>
                     <div class="bg-gra-100 mt-2 p-2 text-red-500">
                         <?php foreach ($errors['age'] as $error) {
-                            echo escape($error . "<br>");
+                            echo escape($error) . "<br>";
                         } ?>
                     </div>
                 <?php endif; ?>
@@ -47,7 +47,7 @@
                 <?php if (array_key_exists("country", $errors)) : ?>
                     <div class="bg-gra-100 mt-2 p-2 text-red-500">
                         <?php foreach ($errors['country'] as $error) {
-                            echo escape($error . "<br>");
+                            echo escape($error) . "<br>";
                         } ?>
                     </div>
                 <?php endif; ?>
@@ -59,7 +59,7 @@
                 <?php if (array_key_exists("socialMediaURL", $errors)) : ?>
                     <div class="bg-gra-100 mt-2 p-2 text-red-500">
                         <?php foreach ($errors['socialMediaURL'] as $error) {
-                            echo escape($error . "<br>");
+                            echo escape($error) . "<br>";
                         } ?>
                     </div>
                 <?php endif; ?>
@@ -71,7 +71,7 @@
                 <?php if (array_key_exists("password", $errors)) : ?>
                     <div class="bg-gra-100 mt-2 p-2 text-red-500">
                         <?php foreach ($errors['password'] as $error) {
-                            echo escape($error . "<br>");
+                            echo escape($error) . "<br>";
                         } ?>
                     </div>
                 <?php endif; ?>
@@ -83,7 +83,7 @@
                 <?php if (array_key_exists("confirmPassword", $errors)) : ?>
                     <div class="bg-gra-100 mt-2 p-2 text-red-500">
                         <?php foreach ($errors['confirmPassword'] as $error) {
-                            echo escape($error . "<br>");
+                            echo escape($error) . "<br>";
                         } ?>
                     </div>
                 <?php endif; ?>
@@ -99,7 +99,7 @@
                         <?php if (array_key_exists("tos", $errors)) : ?>
                             <div class="bg-gra-100 mt-2 p-2 text-red-500">
                                 <?php foreach ($errors['tos'] as $error) {
-                                    echo escape($error . "<br>");
+                                    echo escape($error) . "<br>";
                                 } ?>
                             </div>
                         <?php endif; ?>

@@ -78,7 +78,8 @@ class Container
 
         $factory = $this->definitions[$className];
 
-        $dependency = $factory();
+        // passa il container nella dependency manualmente
+        $dependency = $factory($this);
 
         $this->resolved[$className] = $dependency;
 
