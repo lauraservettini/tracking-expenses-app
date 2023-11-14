@@ -49,6 +49,11 @@ class Database
         return $this->stmt->fetch();
     }
 
+    public function findAll()
+    {
+        return $this->stmt->fetchAll();
+    }
+
     public function id()
     {
         // ritorna l'id dell'ultimo record inserito nel database
