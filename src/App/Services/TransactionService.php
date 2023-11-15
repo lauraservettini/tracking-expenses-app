@@ -28,23 +28,33 @@ class TransactionService
         );
     }
 
-    public function getUserTransactions()
+    public function getUserTransactions(int $length, int $offset)
     {
+        // fa un escape della stringa ricercata nel search form
         $searchTerm = addcslashes($_GET['s'] ?? "", "%_'");
 
-        echo $searchTerm;
+        // parametri da sostituire nella query
+        $params = [
+            "user_id" => $_SESSION['user'],
+            "search_term" => "%{$searchTerm}%"
+        ];
 
         $transactions = $this->db->query(
             "SELECT * , DATE_FORMAT(date, '%Y-%m-%d') as formatted_date
             FROM transactions 
             WHERE user_id = :user_id
-            AND description LIKE :search_term ;",
-            [
-                "user_id" => $_SESSION['user'],
-                "search_term" => "%{$searchTerm}%"
-            ]
+            AND description LIKE :search_term 
+            LIMIT {$length} OFFSET {$offset};",
+            $params
         )->findAll();
 
-        return $transactions;
+        $transactionCount = $this->db->query(
+            "SELECT COUNT(*)
+            FROM transactions 
+            WHERE user_id = :user_id
+            AND description LIKE :search_term;",
+            $params
+        )->count();
+        return [$transactions, $transactionCount];
     }
 }
