@@ -83,9 +83,25 @@ class UserService
     public function logout()
     {
         // cancella la variabile user dalla sessione
-        unset($_SESSION['user']);
+        // unset($_SESSION['user']);
+
+        // distrugge tutti i dati della sessione
+        session_destroy();
 
         // rigenera il SESSION ID
-        session_regenerate_id();
+        // session_regenerate_id();
+
+        // reimposta i valori del cookie
+        $params = session_get_cookie_params();
+
+        setcookie(
+            "PHPSESSID",
+            "",
+            $params['lifetime'],
+            $params['path'],
+            $params['domain'],
+            $params['secure'],
+            $params['httponly']
+        );
     }
 }
