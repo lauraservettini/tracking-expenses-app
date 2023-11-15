@@ -28,4 +28,10 @@ function registerRoutes(App $app)
     $app->get("/transaction", [TransactionController::class, "getCreate"])->addRouteMiddleware(AuthRequiredMiddleware::class);
 
     $app->post("/transaction", [TransactionController::class, "create"])->addRouteMiddleware(AuthRequiredMiddleware::class);
+
+    $app->get("/transaction/{transaction}/", [TransactionController::class, "getEdit"])->addRouteMiddleware(AuthRequiredMiddleware::class);
+
+    $app->post("/transaction/{transaction}/", [TransactionController::class, "update"])->addRouteMiddleware(AuthRequiredMiddleware::class);
+
+    $app->delete("/transaction/{transaction}/", [TransactionController::class, "delete"])->addRouteMiddleware(AuthRequiredMiddleware::class);
 }

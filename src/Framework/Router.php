@@ -12,11 +12,16 @@ class Router
     public function add(string $method, string $path, array $controller)
     {
         $path = $this->normalizePath($path);
+
+        // per supportare i route params toglie dal path le {}
+        $regexPath = preg_replace('#{[^/]+}#', '([^/]+)', $path);
+
         $this->routes[] = [
             "path" => $path,
             "method" => strtoupper($method),
             "controller" => $controller,
-            "middlewares" => []
+            "middlewares" => [],
+            "regexPath" => $regexPath
         ];
     }
 
@@ -32,16 +37,29 @@ class Router
     public function dispatch(string $path, string $method, Container $container = null)
     {
         $path = $this->normalizePath($path);
-        $method = strtoupper($method);
+        $method = strtoupper($_POST['_METHOD'] ?? $method);
 
         foreach ($this->routes as $route) {
             // verifica se il path inserito è diverso dalla route e dal metodo esistenti
+            // $paramValues verrà creata dai riferimenti nel path(&$matches)
             if (
-                !preg_match("#^{$route['path']}$#", $path) ||
+                !preg_match("#^{$route['regexPath']}$#", $path, $paramValues) ||
                 $route["method"] !== $method
             ) {
                 continue;
             }
+
+            // rimuove il primo elemento dell'array
+            array_shift($paramValues);
+
+            // estrae tutti i nomi dei parametri senza {}
+            // $paramKeyss verrà creata dai riferimenti nel path(&$matches)
+            preg_match_all('#{([^/]+)}#', $route['path'], $paramKeys);
+
+            $paramKeys = $paramKeys[1];
+
+            // mette insieme le chiavi dell'array con i valori dell' array 
+            $params = array_combine($paramKeys, $paramValues);
 
             // instanzia il controller da Router
             [$class, $function] = $route['controller'];
@@ -51,7 +69,7 @@ class Router
             // se ci sono parametri passati al costruttore e ritorna una nuova instanza della classe
             $controllerInstance =  $container ? $container->resolve($class) : new $class;
 
-            $action = fn () => $controllerInstance->{$function}();
+            $action = fn () => $controllerInstance->{$function}($params);
 
             // crea un array con le middleware globali e le middleware associate alla route
             // esegue prima le middleware globali e poi le route middleware
