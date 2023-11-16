@@ -6,11 +6,14 @@ namespace App\Services;
 
 use Framework\Database;
 use Framework\Exceptions\ValidationException;
+use Framework\TemplateEngine;
 
 class UserService
 {
-    public function __construct(private Database $db)
-    {
+    public function __construct(
+        private Database $db,
+        private TemplateEngine $view
+    ) {
     }
 
     public function isEmailTaken(string $email)
@@ -76,6 +79,23 @@ class UserService
 
                 // salva nella sessione solo l'id che identifica in modo univoco l'user
                 $_SESSION['user'] = $user['id'];
+
+                // verifica se un utente è admin
+                $isAdmin = (bool)$this->db->query(
+                    "SELECT * FROM admins
+                    WHERE user_id = :user_id;",
+                    [
+                        "user_id" => $_SESSION['user']
+                    ]
+                )->find();
+
+                if (!empty($isAdmin)) {
+                    // salva nella sessione isAdmin
+                    $_SESSION['isAdmin'] = $isAdmin;
+
+                    // salva nelle variabili globali isAdmin al login
+                    $this->view->addGlobal("isAdmin", $_SESSION['isAdmin']);
+                }
             }
         }
     }
@@ -85,7 +105,7 @@ class UserService
         // cancella la variabile user dalla sessione
         // unset($_SESSION['user']);
 
-        // distrugge tutti i dati della sessione
+        // distrugge tutti i dati della sessione, anche user a isAdmin
         session_destroy();
 
         // rigenera il SESSION ID

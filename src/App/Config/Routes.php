@@ -11,10 +11,11 @@ use App\Controllers\{
     AuthController,
     TransactionController,
     ReceiptController,
-    ErrorController
+    ErrorController,
+    AdminController
 };
 
-use App\Middleware\{AuthRequiredMiddleware, GuestOnlyMiddleware};
+use App\Middleware\{AuthRequiredMiddleware, GuestOnlyMiddleware, AdminRequiredMiddleware};
 
 function registerRoutes(App $app)
 {
@@ -32,6 +33,8 @@ function registerRoutes(App $app)
 
     $app->get("/logout", [AuthController::class, "getLogout"])->addRouteMiddleware(AuthRequiredMiddleware::class);
 
+    $app->get("/admin/logout", [AuthController::class, "getLogout"])->addRouteMiddleware(AdminRequiredMiddleware::class);
+
     $app->get("/transaction", [TransactionController::class, "getCreate"])->addRouteMiddleware(AuthRequiredMiddleware::class);
 
     $app->post("/transaction", [TransactionController::class, "create"])->addRouteMiddleware(AuthRequiredMiddleware::class);
@@ -44,11 +47,19 @@ function registerRoutes(App $app)
 
     $app->get("/transaction/{transaction}/receipt", [ReceiptController::class, "getUpload"])->addRouteMiddleware(AuthRequiredMiddleware::class);
 
-    $app->post("/transaction/{transaction}/receipt", [ReceiptController::class, "update"])->addRouteMiddleware(AuthRequiredMiddleware::class);
+    $app->post("/transaction/{transaction}/receipt", [ReceiptController::class, "upload"])->addRouteMiddleware(AuthRequiredMiddleware::class);
 
     $app->get("/transaction/{transaction}/receipt/{receipt}", [ReceiptController::class, "download"])->addRouteMiddleware(AuthRequiredMiddleware::class);
 
     $app->delete("/transaction/{transaction}/receipt/{receipt}", [ReceiptController::class, "delete"])->addRouteMiddleware(AuthRequiredMiddleware::class);
 
     $app->setErrorHandler([ErrorController::class, "notFound"]);
+
+    $app->get("/admin", [AdminController::class, "home"])->addRouteMiddleware(AdminRequiredMiddleware::class);
+
+    $app->get("/admin/users", [AdminController::class, "getUsers"])->addRouteMiddleware(AdminRequiredMiddleware::class);
+
+    $app->get("/admin/users/{user}", [AdminController::class, "getUser"])->addRouteMiddleware(AdminRequiredMiddleware::class);
+
+    $app->get("/admin/users/{user}/receipt/{receipt}", [ReceiptController::class, "download"])->addRouteMiddleware(AdminRequiredMiddleware::class);
 }

@@ -22,7 +22,7 @@ class HomeController
         $page = $_GET['p'] ?? 1;
         $page = (int) $page;
 
-        // numero dei risultari da visionare per paggina
+        // numero dei risultari da visionare per pagina
         $length = 3;
 
         // valore da cui partire negli indici della ricerca della query

@@ -32,3 +32,10 @@ CREATE TABLE IF NOT EXISTS receipts(
   PRIMARY KEY (id),
   FOREIGN KEY(transaction_id) REFERENCES transactions (id) ON DELETE CASCADE
 );
+
+CREATE TABLE IF NOT EXISTS admins(
+  id bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  user_id bigint(20) unsigned NOT NULL, 
+  PRIMARY KEY (id),
+  FOREIGN KEY(user_id) REFERENCES users (id)
+)

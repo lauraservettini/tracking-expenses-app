@@ -47,7 +47,11 @@ class AuthController
         $this->validatorService->validateLogin($_POST);
         $this->userService->login($_POST);
 
-        //dopo la registrazione redirect alla home page
+        //dopo la registrazione redirect a /admin se isAdmin true o alla home page
+        if ($_SESSION['isAdmin']) {
+            redirectTo("/admin");
+        }
+
         redirectTo('/');
     }
 

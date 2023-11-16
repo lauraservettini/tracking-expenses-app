@@ -6,7 +6,7 @@ namespace App\Middleware;
 
 use Framework\Contracts\MiddlewareInterface;
 
-class AuthRequiredMiddleware implements MiddlewareInterface
+class AdminRequiredMiddleware implements MiddlewareInterface
 {
     public function process(callable $next)
     {
@@ -14,8 +14,10 @@ class AuthRequiredMiddleware implements MiddlewareInterface
             redirectTo("/login");
         }
 
-        if (!empty($_SESSION['isAdmin'])) {
-            redirectTo("/admin");
+        if (empty($_SESSION['isAdmin'])) {
+            redirectTo("/");
+        } else if (!$_SESSION['isAdmin']) {
+            redirectTo("/");
         }
 
         $next();

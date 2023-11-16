@@ -46,7 +46,7 @@ class ReceiptController
 
     public function download(array $params)
     {
-        $transaction = $this->transactionService->getUserTransaction($params['transaction']);
+        $transaction = $this->transactionService->getUserTransaction($params);
 
         // verifica se la transazione è presente nel database
         if (empty($transaction)) {

@@ -70,16 +70,34 @@ class TransactionService
         return [$transactions, $transactionCount];
     }
 
-    public function getUserTransaction(string $id)
+    public function getUserTransaction(array $params)
     {
+        if (!empty($_SESSION['isAdmin'])) {
+            $receiptId = $params['receipt'];
+            $userId = $params['user'];
+            $id = $this->db->query(
+                "SELECT transaction_id as id FROM receipts 
+                WHERE id = :id;",
+                [
+                    "id" => $receiptId
+                ]
+            )->find();
+            $id = $id['id'];
+        } else {
+            $userId = $_SESSION['user'];
+            $id = $params['transaction'];
+        }
+
+        $params = [
+            "id" => $id,
+            "user_id" => $userId
+        ];
+
         return $this->db->query(
             "SELECT * , DATE_FORMAT(date, '%Y-%m-%d') as formatted_date
-            FROM transactions
+            FROM transactions as t
             WHERE id = :id AND user_id = :user_id;",
-            [
-                "id" => $id,
-                "user_id" => $_SESSION['user']
-            ]
+            $params
         )->find();
     }
 

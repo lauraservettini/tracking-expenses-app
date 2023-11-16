@@ -19,6 +19,13 @@ class TemplateDataMiddleware implements MiddlewareInterface
     {
         $this->view->addGlobal("title", "Expense Tracking App");
 
+        // aggiunge ad ogni la variabile globale isAdmin salvata nella sessione, false se user non autenticato
+        if (!empty($_SESSION['isAdmin'])) {
+            $this->view->addGlobal("isAdmin", $_SESSION['isAdmin']);
+        } else {
+            $this->view->addGlobal("isAdmin", false);
+        }
+
         $next();
     }
 }
