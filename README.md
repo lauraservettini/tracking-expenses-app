@@ -2,8 +2,6 @@
 
 Questa è una desktop app per la gestione delle spese ed è costruita utilizzando:
 
-::: warning
-
 - PHP
 - HTML
 - CSS
@@ -15,8 +13,8 @@ Questa è una desktop app per la gestione delle spese ed è costruita utilizzand
 - custom Framework
 - Factory Design Pattern(Framework)
 - Singleton Design Pattern(Framework,solo per il Container)
-- 
-:::
+
+__
 
 ## Descrizione
 
