@@ -32,7 +32,7 @@ class TransactionController
 
     public function getEdit(array $params)
     {
-        $transaction = $this->transactionService->getUserTransaction($params['transaction']);
+        $transaction = $this->transactionService->getUserTransaction($params);
 
         if (!$transaction) {
             redirectTo("/");
@@ -49,7 +49,7 @@ class TransactionController
     public function update(array $params)
     {
         // prima verifica se il record è salvato nel database
-        $transaction = $this->transactionService->getUserTransaction($params['transaction']);
+        $transaction = $this->transactionService->getUserTransaction($params);
 
         if (!$transaction) {
             redirectTo("/");

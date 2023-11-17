@@ -16,7 +16,9 @@
         <hr />
 
         <!-- Escaping Data -->
-        <p>Escaping Data: </p>
+        <p>This is a desktop app created to track expenses by individual user.
+            It is also possible to keep track of receipts for each expense by attaching them.
+        </p>
     </section>
     <!-- End Main Content Area -->
 

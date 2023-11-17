@@ -18,7 +18,7 @@ class ReceiptController
 
     public function getUpload(array $params)
     {
-        $transaction = $this->transactionService->getUserTransaction($params['transaction']);
+        $transaction = $this->transactionService->getUserTransaction($params);
 
         if (!$transaction) {
             redirectTo("/");
@@ -29,7 +29,7 @@ class ReceiptController
 
     public function upload(array $params)
     {
-        $transaction = $this->transactionService->getUserTransaction($params['transaction']);
+        $transaction = $this->transactionService->getUserTransaction($params);
 
         if (!$transaction) {
             redirectTo("/");
@@ -69,7 +69,7 @@ class ReceiptController
 
     public function delete(array $params)
     {
-        $transaction = $this->transactionService->getUserTransaction($params['transaction']);
+        $transaction = $this->transactionService->getUserTransaction($params);
 
         // verifica se la transazione è presente nel database
         if (empty($transaction)) {
