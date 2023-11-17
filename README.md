@@ -14,7 +14,7 @@ Questa è una desktop app per la gestione delle spese ed è costruita utilizzand
 - Factory Design Pattern(Framework)
 - Singleton Design Pattern(Framework,solo per il Container)
 
-__
+___
 
 ## Descrizione
 
