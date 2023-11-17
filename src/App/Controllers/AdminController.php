@@ -112,7 +112,7 @@ class AdminController
         );
 
         echo $this->view->render(
-            "/admin/dashboard.php",
+            "/admin/users.php",
             [
                 "users" => $users,
                 "currentPage" => $page,
@@ -159,6 +159,12 @@ class AdminController
             $userId
         );
 
+        $userEmail = "";
+
+        if (empty($transactions)) {
+            $userEmail = $this->adminService->getUserEmail($userId);
+        }
+
         // numero dell'ultima pagina relativa alle transazioni in funzione al numero di record visualizzati nella pagina
         $lastPage = ceil($transactionCount / $length);
 
@@ -178,6 +184,7 @@ class AdminController
             "/admin/user_details.php",
             [
                 "transactions" => $transactions,
+                "userEmail" => $userEmail,
                 "currentPage" => $page,
                 "previousPageQuery" => http_build_query(
                     [

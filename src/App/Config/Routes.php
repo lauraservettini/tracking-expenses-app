@@ -19,8 +19,6 @@ use App\Middleware\{AuthRequiredMiddleware, GuestOnlyMiddleware, AdminRequiredMi
 
 function registerRoutes(App $app)
 {
-    $app->get("/", [HomeController::class, "home"])->addRouteMiddleware(AuthRequiredMiddleware::class);
-
     $app->get("/about", [AboutController::class, "about"]);
 
     $app->get("/register", [AuthController::class, "getRegister"])->addRouteMiddleware(GuestOnlyMiddleware::class);
@@ -31,9 +29,10 @@ function registerRoutes(App $app)
 
     $app->post("/login", [AuthController::class, "login"])->addRouteMiddleware(GuestOnlyMiddleware::class);
 
-    $app->get("/logout", [AuthController::class, "getLogout"])->addRouteMiddleware(AuthRequiredMiddleware::class);
+    // routes con autenticazione
+    $app->get("/", [HomeController::class, "home"])->addRouteMiddleware(AuthRequiredMiddleware::class);
 
-    $app->get("/admin/logout", [AuthController::class, "getLogout"])->addRouteMiddleware(AdminRequiredMiddleware::class);
+    $app->get("/logout", [AuthController::class, "getLogout"])->addRouteMiddleware(AuthRequiredMiddleware::class);
 
     $app->get("/transaction", [TransactionController::class, "getCreate"])->addRouteMiddleware(AuthRequiredMiddleware::class);
 
@@ -53,13 +52,17 @@ function registerRoutes(App $app)
 
     $app->delete("/transaction/{transaction}/receipt/{receipt}", [ReceiptController::class, "delete"])->addRouteMiddleware(AuthRequiredMiddleware::class);
 
-    $app->setErrorHandler([ErrorController::class, "notFound"]);
-
+    // routes con autorizzazione admin
     $app->get("/admin", [AdminController::class, "home"])->addRouteMiddleware(AdminRequiredMiddleware::class);
+
+    $app->get("/admin/logout", [AuthController::class, "getLogout"])->addRouteMiddleware(AdminqRequiredMiddleware::class);
 
     $app->get("/admin/users", [AdminController::class, "getUsers"])->addRouteMiddleware(AdminRequiredMiddleware::class);
 
     $app->get("/admin/users/{user}", [AdminController::class, "getUser"])->addRouteMiddleware(AdminRequiredMiddleware::class);
 
     $app->get("/admin/users/{user}/receipt/{receipt}", [ReceiptController::class, "download"])->addRouteMiddleware(AdminRequiredMiddleware::class);
+
+    // route non trovata
+    $app->setErrorHandler([ErrorController::class, "notFound"]);
 }

@@ -8,6 +8,7 @@
             <?php endif; ?>
             <?php if ($auth['isAuth'] === true && $isAdmin) : ?>
                 <a href="/admin" class="text-gray-300 hover:text-white transition">Dashboard</a>
+                <a href="/admin/users" class="text-gray-300 hover:text-white transition">Users</a>
             <?php endif; ?>
             <a href="/about" class="text-gray-300 hover:text-white transition">About</a>
             <?php if ($auth['isAuth'] === false) : ?>

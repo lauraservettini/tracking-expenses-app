@@ -118,8 +118,17 @@ class AdminService
         ];
 
         $users = $this->db->query(
-            "SELECT * FROM users
-            WHERE email LIKE :search_term,
+            "SELECT 
+            id,
+            age, 
+            country, 
+            email,
+            social_media_url,
+            DATE_FORMAT(created_at, '%Y-%m-%d') as formatted_date
+            FROM users
+            WHERE email LIKE :search_term OR 
+            	country LIKE :search_term OR 
+                social_media_url LIKE :search_term
             LIMIT {$length} OFFSET {$offset};",
             $params
         )->findAll();
@@ -132,5 +141,18 @@ class AdminService
         )->count();
 
         return [$users, $usersCount];
+    }
+
+    public function getUserEmail(int $id)
+    {
+        $userEmail = $this->db->query(
+            "SELECT email FROM users
+            WHERE id = :id;",
+            [
+                "id" => $id
+            ]
+        )->find();
+
+        return $userEmail['email'];
     }
 }
